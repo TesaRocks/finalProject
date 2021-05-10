@@ -2,9 +2,9 @@
   "name": "finalproject",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon index.ts"
   },
   "repository": {
     "type": "git",
@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/TesaRocks/finalProject#readme",
   "dependencies": {
+    "@types/node": "^15.0.2",
     "express": "^4.17.1",
     "typescript": "^4.2.4"
   },
