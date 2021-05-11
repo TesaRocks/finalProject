@@ -1,14 +1,8 @@
 import { IUser } from "./user.interface";
 
 export class UserService {
-  private users: IUser[] = [
-    { name: "dietl", amount: 20 },
-    { name: "laciar", amount: 60 },
-  ];
+  private users: IUser[] = [];
 
-  public initial() {
-    return "HELLO WORLD PLEASE SEND USERS";
-  }
   public save(user: IUser) {
     this.users.push(user);
     return user;
