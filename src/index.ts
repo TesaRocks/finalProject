@@ -1,10 +1,11 @@
-import express = require("express");
-const bp = require('body-parser')
+import express from "express";
+
+const bp = require("body-parser");
 
 const app: express.Application = express();
 
-app.use(bp.json())
-app.use(bp.urlencoded({ extended: true }))
+app.use(bp.json());
+app.use(bp.urlencoded({ extended: true }));
 interface IUser {
   name: string;
 }
@@ -16,13 +17,13 @@ app.get("/", (req, res) => {
   res.status(200).json(req.headers);
 });
 
-app.post("/user", (req, res) => {  
+app.post("/user", (req, res) => {
   users.push(req.body);
 
   console.log(req);
   const obj = {
-    status: "OK"
-  }
+    status: "OK",
+  };
   res.status(200).json(req.body);
 });
 
