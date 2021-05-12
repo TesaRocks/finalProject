@@ -42,6 +42,6 @@ userRouter.delete("/:id", (req: Request, res: Response) => {
   if (!item) {
     return res.status(404).send(notFoundMessage);
   }
-
-  res.status(200).json(userService.removeUser(id));
+  userService.removeUser(id);
+  res.status(200).send("Successfully Deleted");
 });
