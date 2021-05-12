@@ -1,10 +1,12 @@
 import express, { Request, Response } from "express";
-import { IUser } from "./user.interface";
-import { UserService } from "./users.service";
+import { IUser } from "../services/user.interface";
+import { UserService } from "../services/user.service";
+import { UserV2Service } from "../services/userV2.service";
 
 export const userRouter = express.Router();
 
 const userService = new UserService();
+const userV2Service = new UserV2Service();
 const notFoundMessage = "User not found";
 
 userRouter.get("", (req: Request, res: Response) => {

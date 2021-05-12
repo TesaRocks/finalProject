@@ -1,20 +1,7 @@
 import express from "express";
-import { userRouter } from "./user.router";
+import { userRouter } from "./routers/user.router";
+import * as bp from "body-parser";
 
-const mysql = require("mysql");
-
-const connection = mysql.createConnection({
-  host: "127.0.0.1",
-  user: "user",
-  password: "password",
-  database: "db",
-});
-connection.connect((err: any) => {
-  if (err) throw err;
-  console.log("Connected!");
-});
-
-const bp = require("body-parser");
 const app: express.Application = express();
 
 app.use(bp.json());
