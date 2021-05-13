@@ -17,6 +17,12 @@ export class UserRepository {
   }
 
   public getUsers() {
-    //this.connection.;
+    this.connection.query(
+      "SELECT * FROM user",
+      function (err: mysql.MysqlError, result, fields) {
+        if (err) throw err;
+        return result;
+      }
+    );
   }
 }

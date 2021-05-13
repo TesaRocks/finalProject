@@ -10,7 +10,7 @@ export class UserV2Service {
   }
 
   public getAll() {
-    return this.users;
+    this.userRepository.getUsers();
   }
   public getUser(index: number) {
     return this.users[index];

@@ -10,7 +10,8 @@ const userV2Service = new UserV2Service();
 const notFoundMessage = "User not found";
 
 userRouter.get("", (req: Request, res: Response) => {
-  res.status(200).json(userService.getAll());
+  //res.status(200).json(userService.getAll());
+  res.status(200).json(userV2Service.getAll());
 });
 
 userRouter.get("/:id", (req, res) => {
