@@ -21,6 +21,7 @@ export class UserRepository {
       "SELECT * FROM user",
       function (err: mysql.MysqlError, result, fields) {
         if (err) throw err;
+        console.log(result);
         return result;
       }
     );
