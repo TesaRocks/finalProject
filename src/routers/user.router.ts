@@ -14,7 +14,7 @@ userRouter.get("", (req: Request, res: Response) => {
   res.status(200).json(userV2Service.getAll());
 });
 
-userRouter.get("/:id", (req, res) => {
+userRouter.get("/:id", (req: Request, res: Response) => {
   const id: number = parseInt(req.params.id, 10);
 
   const item = userService.getUser(id);
