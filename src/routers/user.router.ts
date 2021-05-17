@@ -3,7 +3,7 @@ import { IUser } from "../services/user.interface";
 import { UserService } from "../services/user.service";
 import { UserV2Service } from "../services/userV2.service";
 
-export const userRouter = express.Router();
+export const userRouter: express.Router = express.Router();
 
 const userService = new UserService();
 const userV2Service = new UserV2Service();
