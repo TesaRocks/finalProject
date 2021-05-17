@@ -1,29 +1,12 @@
 import * as mysql from "mysql";
-import { IDb } from "./makeDb";
-//import util from 'util'
-
+import { container } from "tsyringe";
+import { Db } from "./Db";
 
 export class UserRepository {
-  // private connection: mysql.Connection;
-  // private util
+  private db: Db ;
 
-  private db: IDb;
-
-
-  constructor(db: IDb) {    
-    this.db = db;
-
-    // this.connection = mysql.createConnection({
-    //   host: "127.0.0.1",
-    //   port: 3307,
-    //   user: "user",
-    //   password: "password",
-    //   database: "db",
-    // });
-    // this.connection.connect((err: mysql.MysqlError) => {
-    //   if (err) throw err;
-    //   console.log("Connected!");
-    // });
+  constructor() {    
+    this.db = container.resolve<Db>(Db);;
   }
 
   public async getUsers() {
