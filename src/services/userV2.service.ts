@@ -1,3 +1,5 @@
+
+import { makeDb } from "../repositories/makeDb";
 import { UserRepository } from "../repositories/user.repository";
 import { IUser } from "./user.interface";
 
@@ -6,11 +8,20 @@ export class UserV2Service {
 
   private userRepository: UserRepository;
   constructor() {
-    this.userRepository = new UserRepository();
+    const config = {
+      host: "127.0.0.1",
+      port: 3307,
+      user: "user",
+      password: "password",
+      database: "db",
+    };
+    const db = makeDb( config );
+
+    this.userRepository = new UserRepository(db);
   }
 
-  public getAll() {
-    this.userRepository.getUsers();
+  public async getAll() {    
+    return await this.userRepository.getUsers();
   }
   public getUser(index: number) {
     return this.users[index];

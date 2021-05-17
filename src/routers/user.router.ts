@@ -9,9 +9,12 @@ const userService = new UserService();
 const userV2Service = new UserV2Service();
 const notFoundMessage = "User not found";
 
-userRouter.get("", (req: Request, res: Response) => {
+userRouter.get("", async (req: Request, res: Response) => {
   //res.status(200).json(userService.getAll());
-  res.status(200).json(userV2Service.getAll());
+
+  const response = await userV2Service.getAll();
+  console.log("response  await userV2Service.getAll", response);
+  res.status(200).json(response);
 });
 
 userRouter.get("/:id", (req: Request, res: Response) => {
