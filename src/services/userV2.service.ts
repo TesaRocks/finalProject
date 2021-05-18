@@ -11,24 +11,15 @@ export class UserV2Service {
     return await this.userRepository.getUsers();
   }
   public async getUserById(id: number) {
-    try {
-      return await this.userRepository.getUserById(id);
-    } catch (error) {
-      throw error;
-    }
+    return await this.userRepository.getUserById(id);
   }
   public async save(user: IUser) {
-    try {
-      return await this.userRepository.save(user);
-    } catch (error) {
-      throw error;
-    }
+    return await this.userRepository.save(user);
   }
-  // public updateUser(index: number, user: IUser) {
-  //   this.users[index] = user;
-  //   return this.users[index];
-  // }
-  // public removeUser(index: number) {
-  //   this.users.splice(index, 1);
-  // }
+  public async updateUser(id: number, user: IUser) {
+    return await this.userRepository.updateUser(id, user);
+  }
+  public async removeUser(id: number) {
+    return await this.userRepository.removeUser(id);
+  }
 }

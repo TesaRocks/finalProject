@@ -11,35 +11,32 @@ export class UserRepository {
   }
 
   public async getUsers(): Promise<IUser[]> {
-    try {
-      const usersList = await this.db.query({ sql: "SELECT * FROM user" });
-      console.log("info", usersList);
-      return usersList;
-    } catch (err) {
-      console.log(err);
-      return err;
-    }
+    const usersList = await this.db.query({ sql: "SELECT * FROM user" });
+    return usersList;
   }
   public async getUserById(index: number): Promise<IUser> {
-    try {
-      const userFound = await this.db.query({
-        sql: `SELECT * FROM user WHERE id = ${index}`,
-      });
-      return userFound[0];
-    } catch (err) {
-      console.log(err);
-      return err;
-    }
+    const userFound = await this.db.query({
+      sql: `SELECT * FROM user WHERE id = ${index}`,
+    });
+    return userFound[0];
   }
-  public async save(user: IUser) {
-    try {
-      const okPacket: OkPacket = await this.db.query({
-        sql: `INSERT INTO user (name, email, password) VALUES('${user.name}', ${user.email}, '${user.password}');`,
-      });
-      user.id = okPacket.insertId;      
-      return user;
-    } catch (err) {
-      throw err;      
-    }
+  public async save(user: IUser): Promise<IUser> {
+    const okPacket: OkPacket = await this.db.query({
+      sql: `INSERT INTO user (name, email, password) VALUES('${user.name}', '${user.email}', '${user.password}');`,
+    });
+    user.id = okPacket.insertId;
+    return user;
+  }
+  public async updateUser(id: number, user: IUser): Promise<IUser> {
+    const okPacket: OkPacket = await this.db.query({
+      sql: `UPDATE user SET name='${user.name}', email='${user.email}', password='${user.password}' WHERE id= '${id}'`,
+    });
+    return user;
+  }
+  public async removeUser(id: number): Promise<string> {
+    const okPacket: OkPacket = await this.db.query({
+      sql: `DELETE FROM user WHERE id='${id}'`,
+    });
+    return "Successfuly Deleted";
   }
 }

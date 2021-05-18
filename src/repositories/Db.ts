@@ -22,12 +22,10 @@ export class Db implements IDb {
   }
   //@ts-ignore
   query(sql: QueryOptions): OkPacket {
-    return (
-      util
-        .promisify(this.connection.query)
-        //@ts-ignore
-        .call(this.connection, sql)
-    );
+    return util
+      .promisify(this.connection.query)
+
+      .call(this.connection, sql);
   }
   close() {
     return util.promisify(this.connection.end).call(this.connection);
