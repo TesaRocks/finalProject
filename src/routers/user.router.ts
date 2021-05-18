@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import { UserV2Service } from "../services/userV2.service";
 import { IUser } from "../services/user.interface";
+import { errorHandling } from "./error-handling";
 
 export const userRouter: express.Router = express.Router();
 
@@ -19,7 +20,11 @@ userRouter.get("/:id", async (req: Request, res: Response) => {
   try {
     const id: number = await parseInt(req.params.id, 10);
     const user = await userV2Service.getUserById(id);
-    return res.status(200).json(user);
+    if (user != undefined) {
+      return res.status(200).json(user);
+    } else {
+      return res.status(404).send(errorHandling(undefined));
+    }
   } catch (err) {
     res.status(401).json(err);
   }
@@ -48,7 +53,7 @@ userRouter.delete("/:id", async (req: Request, res: Response) => {
   try {
     const id: number = parseInt(req.params.id, 10);
     const removeUser = await userV2Service.removeUser(id);
-    res.status(200).send(removeUser);
+    res.status(200).json(removeUser);
   } catch (err) {
     res.status(401).json(err);
   }

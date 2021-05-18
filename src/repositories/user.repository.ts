@@ -27,16 +27,18 @@ export class UserRepository {
     user.id = okPacket.insertId;
     return user;
   }
-  public async updateUser(id: number, user: IUser): Promise<IUser> {
+  public async updateUser(id: number, user: IUser): Promise<IUser | string> {
     const okPacket: OkPacket = await this.db.query({
       sql: `UPDATE user SET name='${user.name}', email='${user.email}', password='${user.password}' WHERE id= '${id}'`,
     });
-    return user;
+    return okPacket.affectedRows !== 0 ? user : "Invalid user Id";
   }
   public async removeUser(id: number): Promise<string> {
     const okPacket: OkPacket = await this.db.query({
       sql: `DELETE FROM user WHERE id='${id}'`,
     });
-    return "Successfuly Deleted";
+    return okPacket.affectedRows !== 0
+      ? "Successfuly Deleted"
+      : "Invalid user Id";
   }
 }
