@@ -1,10 +1,12 @@
-import { IDb } from "./makeDb";
+import * as mysql from "mysql";
+import { container } from "tsyringe";
+import { Db } from "./Db";
 
 export class UserRepository {
-  private db: IDb;
+  private db: Db;
 
-  constructor(db: IDb) {
-    this.db = db;
+  constructor() {
+    this.db = container.resolve<Db>(Db);
   }
 
   public async getUsers() {
@@ -18,19 +20,6 @@ export class UserRepository {
     }
   }
 }
-
-// private connection: mysql.Connection;
-// this.connection = mysql.createConnection({
-//   host: "127.0.0.1",
-//   port: 3307,
-//   user: "user",
-//   password: "password",
-//   database: "db",
-// });
-// this.connection.connect((err: mysql.MysqlError) => {
-//   if (err) throw err;
-//   console.log("Connected!");
-// });
 
 //   this.connection.query(
 //     "SELECT * FROM user",
