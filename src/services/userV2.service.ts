@@ -1,31 +1,27 @@
-
-
+import { makeDb } from "../repositories/makeDb";
 import { UserRepository } from "../repositories/user.repository";
-import { IUser } from "./user.interface";
 
 export class UserV2Service {
-  private users: IUser[] = [];
-
   private userRepository: UserRepository;
   constructor() {
-    this.userRepository = new UserRepository();
+    const config = {
+      host: "127.0.0.1",
+      port: 3307,
+      user: "user",
+      password: "password",
+      database: "db",
+    };
+    const db = makeDb(config);
+
+    this.userRepository = new UserRepository(db);
   }
 
-  public async getAll() {    
+  public async getAll() {
     return await this.userRepository.getUsers();
   }
-  public getUser(index: number) {
-    return this.users[index];
-  }
-  public save(user: IUser) {
-    this.users.push(user);
-    return user;
-  }
-  public updateUser(index: number, user: IUser) {
-    this.users[index] = user;
-    return this.users[index];
-  }
-  public removeUser(index: number) {
-    this.users.splice(index, 1);
-  }
+  public getUser(index: number) {}
+  //public save(user: IUser) {}
+  //public updateUser(index: number, user: IUser) {
+  //}
+  public removeUser(index: number) {}
 }

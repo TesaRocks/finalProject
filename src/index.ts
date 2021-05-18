@@ -1,4 +1,3 @@
-import "reflect-metadata";
 import express from "express";
 import { userRouter } from "./routers/user.router";
 import * as bp from "body-parser";
