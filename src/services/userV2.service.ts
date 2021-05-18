@@ -10,11 +10,19 @@ export class UserV2Service {
   public async getAll() {
     return await this.userRepository.getUsers();
   }
-  public async getUser(index: number) {
-    return await this.userRepository.getUser(index);
+  public async getUserById(id: number) {
+    try {
+      return await this.userRepository.getUserById(id);
+    } catch (error) {
+      throw error;
+    }
   }
   public async save(user: IUser) {
-    return await this.userRepository.save(user);
+    try {
+      return await this.userRepository.save(user);
+    } catch (error) {
+      throw error;
+    }
   }
   // public updateUser(index: number, user: IUser) {
   //   this.users[index] = user;

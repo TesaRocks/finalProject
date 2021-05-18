@@ -5,6 +5,13 @@ import * as bp from "body-parser";
 
 const app: express.Application = express();
 
+// const errorHandler = (err: any, req: any, res: any, next: any) => {
+//   res.status(401);
+//   res.json({ error: err });
+// };
+
+// app.use(errorHandler);
+
 app.use("/user", [bp.json(), bp.urlencoded({ extended: true }), userRouter]);
 
 app.listen(8008, () => {

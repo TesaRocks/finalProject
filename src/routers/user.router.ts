@@ -7,25 +7,26 @@ const userV2Service = new UserV2Service();
 const notFoundMessage = "User not found";
 
 userRouter.get("", async (req: Request, res: Response) => {
-  const response = await userV2Service.getAll();
-  console.log("response  await userV2Service.getAll", response);
-  res.status(200).json(response);
+  const usersList = await userV2Service.getAll();
+  res.status(200).json(usersList);
 });
 
 userRouter.get("/:id", async (req: Request, res: Response) => {
   const id: number = await parseInt(req.params.id, 10);
-
-  const item = await userV2Service.getUser(id);
-
-  if (item.length < 1) {
-    return res.status(404).send(notFoundMessage);
+  const user = await userV2Service.getUserById(id);
+  return res.status(200).json(user);
+});
+userRouter.post("", async (req: Request, res: Response) => {  
+  try {
+    const newUser = await userV2Service.save(req.body);
+    res.status(201).json(newUser);
+  } catch (err) { 
+    res.status(401).json(err);
   }
-  res.status(200).json(item);
 });
-userRouter.post("", async (req: Request, res: Response) => {
-  const newUser = await userV2Service.save(req.body);
-  res.status(201).json(newUser);
-});
+
+
+
 
 // userRouter.put("/:id", (req: Request, res: Response) => {
 //   const id: number = parseInt(req.params.id, 10);

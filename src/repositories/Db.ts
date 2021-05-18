@@ -21,7 +21,7 @@ export class Db implements IDb {
     this.connection = mysql.createConnection(config);
   }
   //@ts-ignore
-  query(sql: QueryOptions) {
+  query(sql: QueryOptions): OkPacket {
     return (
       util
         .promisify(this.connection.query)
