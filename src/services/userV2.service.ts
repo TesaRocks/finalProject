@@ -1,9 +1,7 @@
 import { UserRepository } from "../repositories/user.repository";
-import { IUser } from "./user.interface";
+import { IUser } from "../services/user.interface";
 
 export class UserV2Service {
-  private users: IUser[] = [];
-
   private userRepository: UserRepository;
   constructor() {
     this.userRepository = new UserRepository();
@@ -12,18 +10,17 @@ export class UserV2Service {
   public async getAll() {
     return await this.userRepository.getUsers();
   }
-  public getUser(index: number) {
-    return this.users[index];
+  public async getUser(index: number) {
+    return await this.userRepository.getUser(index);
   }
-  public save(user: IUser) {
-    this.users.push(user);
-    return user;
+  public async save(user: IUser) {
+    return await this.userRepository.save(user);
   }
-  public updateUser(index: number, user: IUser) {
-    this.users[index] = user;
-    return this.users[index];
-  }
-  public removeUser(index: number) {
-    this.users.splice(index, 1);
-  }
+  // public updateUser(index: number, user: IUser) {
+  //   this.users[index] = user;
+  //   return this.users[index];
+  // }
+  // public removeUser(index: number) {
+  //   this.users.splice(index, 1);
+  // }
 }

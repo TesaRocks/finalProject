@@ -2,8 +2,13 @@ import util from "util";
 import mysql, { ConnectionConfig, QueryOptions } from "mysql";
 import { injectable } from "tsyringe";
 
+export interface IDb {
+  query: (sql: QueryOptions) => Promise<unknown>;
+  close: () => Promise<void>;
+}
+
 @injectable()
-class Db implements IDb {
+export class Db implements IDb {
   private connection;
   constructor() {
     const config: ConnectionConfig = {
@@ -15,18 +20,16 @@ class Db implements IDb {
     };
     this.connection = mysql.createConnection(config);
   }
-
+  //@ts-ignore
   query(sql: QueryOptions) {
-    return util.promisify(this.connection.query).call(this.connection, sql);
+    return (
+      util
+        .promisify(this.connection.query)
+        //@ts-ignore
+        .call(this.connection, sql)
+    );
   }
   close() {
     return util.promisify(this.connection.end).call(this.connection);
   }
 }
-
-interface IDb {
-  query: (sql: QueryOptions) => Promise<unknown>;
-  close: () => Promise<void>;
-}
-
-export { Db, IDb };
