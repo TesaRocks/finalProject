@@ -1,50 +1,64 @@
 import express, { Request, Response } from "express";
-import { IUser } from "../services/user.interface";
-import { UserService } from "../services/user.service";
 import { UserV2Service } from "../services/userV2.service";
+import { IUser } from "../services/user.interface";
+import { errorHandling } from "./error-handling";
 
-export const userRouter = express.Router();
+export const userRouter: express.Router = express.Router();
+userRouter.use((req: Request, res: Response, next: any) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  next();
+});
 
-const userService = new UserService();
 const userV2Service = new UserV2Service();
-const notFoundMessage = "User not found";
 
-userRouter.get("", (req: Request, res: Response) => {
-  //res.status(200).json(userService.getAll());
-  res.status(200).json(userV2Service.getAll());
-});
-
-userRouter.get("/:id", (req, res) => {
-  const id: number = parseInt(req.params.id, 10);
-
-  const item = userService.getUser(id);
-  if (!item) {
-    return res.status(404).send(notFoundMessage);
+userRouter.get("", async (req: Request, res: Response) => {
+  try {
+    const usersList = await userV2Service.getAll();
+    res.status(200).json(usersList);
+  } catch (err) {
+    res.status(401).json(err);
   }
-  res.status(200).json(item);
-});
-userRouter.post("", (req: Request, res: Response) => {
-  res.status(201).json(userService.save(req.body));
 });
 
-userRouter.put("/:id", (req: Request, res: Response) => {
-  const id: number = parseInt(req.params.id, 10);
-  const newUser: IUser = req.body;
-
-  const item = userService.getUser(id);
-  if (!item) {
-    return res.status(404).send(notFoundMessage);
+userRouter.get("/:id", async (req: Request, res: Response) => {
+  try {
+    const id: number = await parseInt(req.params.id, 10);
+    const user = await userV2Service.getUserById(id);
+    if (user != undefined) {
+      return res.status(200).json(user);
+    } else {
+      return res.status(404).send(errorHandling(undefined));
+    }
+  } catch (err) {
+    res.status(401).json(err);
   }
-
-  res.status(200).json(userService.updateUser(id, newUser));
+});
+userRouter.post("", async (req: Request, res: Response) => {
+  try {
+    const newUser = await userV2Service.save(req.body);
+    res.status(201).json(newUser);
+  } catch (err) {
+    res.status(401).json(err);
+  }
 });
 
-userRouter.delete("/:id", (req: Request, res: Response) => {
-  const id: number = parseInt(req.params.id, 10);
-  const item = userService.getUser(id);
-  if (!item) {
-    return res.status(404).send(notFoundMessage);
+userRouter.put("/:id", async (req: Request, res: Response) => {
+  try {
+    const id: number = parseInt(req.params.id, 10);
+    const newUser: IUser = req.body;
+    const updatedUser = await userV2Service.updateUser(id, newUser);
+    res.status(200).json(updatedUser);
+  } catch (err) {
+    res.status(401).json(err);
   }
-  userService.removeUser(id);
-  res.status(200).send("Successfully Deleted");
+});
+
+userRouter.delete("/:id", async (req: Request, res: Response) => {
+  try {
+    const id: number = parseInt(req.params.id, 10);
+    const removeUser = await userV2Service.removeUser(id);
+    res.status(200).json(removeUser);
+  } catch (err) {
+    res.status(401).json(err);
+  }
 });

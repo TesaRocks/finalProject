@@ -1,29 +1,25 @@
 import { UserRepository } from "../repositories/user.repository";
-import { IUser } from "./user.interface";
+import { IUser } from "../services/user.interface";
 
 export class UserV2Service {
-  private users: IUser[] = [];
-
   private userRepository: UserRepository;
   constructor() {
     this.userRepository = new UserRepository();
   }
 
-  public getAll() {
-    this.userRepository.getUsers();
+  public async getAll() {
+    return await this.userRepository.getUsers();
   }
-  public getUser(index: number) {
-    return this.users[index];
+  public async getUserById(id: number) {
+    return await this.userRepository.getUserById(id);
   }
-  public save(user: IUser) {
-    this.users.push(user);
-    return user;
+  public async save(user: IUser) {
+    return await this.userRepository.save(user);
   }
-  public updateUser(index: number, user: IUser) {
-    this.users[index] = user;
-    return this.users[index];
+  public async updateUser(id: number, user: IUser) {
+    return await this.userRepository.updateUser(id, user);
   }
-  public removeUser(index: number) {
-    this.users.splice(index, 1);
+  public async removeUser(id: number) {
+    return await this.userRepository.removeUser(id);
   }
 }
