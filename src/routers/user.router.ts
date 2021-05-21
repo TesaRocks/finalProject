@@ -4,6 +4,7 @@ import { IUser } from "../services/user.interface";
 import { errorHandling } from "./error-handling";
 
 export const userRouter: express.Router = express.Router();
+
 userRouter.use((req: Request, res: Response, next: any) => {
   res.header("Access-Control-Allow-Origin", "*");
   next();
