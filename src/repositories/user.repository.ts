@@ -11,12 +11,14 @@ export class UserRepository {
   }
 
   public async getUsers(): Promise<IUser[]> {
-    const usersList = await this.db.query({ sql: "SELECT * FROM user" });
+    const usersList = await this.db.query({
+      sql: "SELECT id,name, email FROM user",
+    });
     return usersList;
   }
   public async getUserById(index: number): Promise<IUser> {
     const userFound = await this.db.query({
-      sql: `SELECT * FROM user WHERE id = ${index}`,
+      sql: `SELECT id,name, email FROM user WHERE id = ${index}`,
     });
     return userFound[0];
   }
