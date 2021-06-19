@@ -1,13 +1,12 @@
 import "reflect-metadata";
 import express from "express";
 import { userRouter } from "./routers/user.router";
-import * as bp from "body-parser";
 
 const app: express.Application = express();
 
 app.use("/api/user", [
-  bp.json(),
-  bp.urlencoded({ extended: false }),
+  express.json(),
+  express.urlencoded({ extended: false }),
   userRouter,
 ]);
 
