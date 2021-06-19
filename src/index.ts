@@ -6,7 +6,7 @@ const app: express.Application = express();
 
 app.use("/api/user", [
   express.json(),
-  express.urlencoded({ extended: false }),
+  //express.urlencoded({ extended: false }),
   userRouter,
 ]);
 
