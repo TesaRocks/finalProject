@@ -7,7 +7,7 @@ const app: express.Application = express();
 
 app.use("/api/user", [
   bp.json(),
-  bp.urlencoded({ extended: true }),
+  bp.urlencoded({ extended: false }),
   userRouter,
 ]);
 
