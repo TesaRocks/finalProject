@@ -56,4 +56,11 @@ export class UserRepository {
     });
     return productFound[0];
   }
+  public async saveProduct(product: IProduct, id: number): Promise<IProduct> {
+    const okPacket: OkPacket = await this.db.query({
+      sql: `INSERT INTO products (name, description, imagePath, price, id) VALUES('${product.name}', '${product.description}', '${product.imagePath}', '${product.price}', '${id}');`,
+    });
+    product.product_id = okPacket.insertId;
+    return product;
+  }
 }

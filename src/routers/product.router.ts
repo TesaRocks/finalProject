@@ -28,3 +28,13 @@ productRouter.get("/:id", async (req: Request, res: Response) => {
     res.status(401).json(err);
   }
 });
+
+productRouter.post("", async (req: Request, res: Response) => {
+  const userId: number = 1;
+  try {
+    const newProduct = await userV2Service.saveProduct(req.body, userId);
+    res.status(201).json(newProduct);
+  } catch (err) {
+    res.status(401).json(err);
+  }
+});

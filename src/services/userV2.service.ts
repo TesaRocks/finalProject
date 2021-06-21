@@ -29,4 +29,7 @@ export class UserV2Service {
   public async getProductById(id: number) {
     return await this.userRepository.getProductById(id);
   }
+  public async saveProduct(product: IProduct, id: number) {
+    return await this.userRepository.saveProduct(product, id);
+  }
 }
