@@ -63,4 +63,13 @@ export class UserRepository {
     product.product_id = okPacket.insertId;
     return product;
   }
+  public async updateProduct(
+    id: number,
+    product: IProduct
+  ): Promise<IProduct | string> {
+    const okPacket: OkPacket = await this.db.query({
+      sql: `UPDATE products SET name='${product.name}', description='${product.description}', imagePath='${product.imagePath}', price='${product.price}'  WHERE id= '${id}'`,
+    });
+    return okPacket.affectedRows !== 0 ? product : "Invalid product Id";
+  }
 }

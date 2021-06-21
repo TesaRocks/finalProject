@@ -32,4 +32,7 @@ export class UserV2Service {
   public async saveProduct(product: IProduct, id: number) {
     return await this.userRepository.saveProduct(product, id);
   }
+  public async updateProduct(id: number, product: IProduct) {
+    return await this.userRepository.updateProduct(id, product);
+  }
 }
