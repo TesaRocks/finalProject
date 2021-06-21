@@ -1,6 +1,7 @@
 import { OkPacket } from "mysql";
 import { container } from "tsyringe";
 import { IUser } from "../services/user.interface";
+import { IProduct } from "../services/product.interface";
 import { Db } from "./Db";
 
 export class UserRepository {
@@ -42,5 +43,11 @@ export class UserRepository {
     return okPacket.affectedRows !== 0
       ? "Successfuly Deleted"
       : "Invalid user Id";
+  }
+  public async getProducts(): Promise<IProduct[]> {
+    const productList = await this.db.query({
+      sql: "SELECT * FROM products",
+    });
+    return productList;
   }
 }
