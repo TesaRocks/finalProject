@@ -50,4 +50,10 @@ export class UserRepository {
     });
     return productList;
   }
+  public async getProductById(index: number): Promise<IProduct> {
+    const productFound = await this.db.query({
+      sql: `SELECT * FROM products WHERE productId= ${index}`,
+    });
+    return productFound[0];
+  }
 }

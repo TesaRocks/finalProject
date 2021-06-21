@@ -26,4 +26,7 @@ export class UserV2Service {
   public async getAllProducts() {
     return await this.userRepository.getProducts();
   }
+  public async getProductById(id: number) {
+    return await this.userRepository.getProductById(id);
+  }
 }

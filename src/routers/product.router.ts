@@ -15,3 +15,16 @@ productRouter.get("", async (req: Request, res: Response) => {
     res.status(401).json(err);
   }
 });
+productRouter.get("/:id", async (req: Request, res: Response) => {
+  try {
+    const id: number = await parseInt(req.params.id, 10);
+    const product = await userV2Service.getProductById(id);
+    if (product) {
+      return res.status(200).json(product);
+    } else {
+      return res.status(404).send(errorHandling(undefined));
+    }
+  } catch (err) {
+    res.status(401).json(err);
+  }
+});
