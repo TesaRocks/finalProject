@@ -26,7 +26,7 @@ export class ProductRepository {
     const okPacket: OkPacket = await this.db.query({
       sql: `INSERT INTO products (name, description, imagePath, price, id) VALUES('${product.name}', '${product.description}', '${product.imagePath}', '${product.price}', '${id}');`,
     });
-    product.product_id = okPacket.insertId;
+    product.productId = okPacket.insertId;
     return product;
   }
   public async updateProduct(
