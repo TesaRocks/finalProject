@@ -1,6 +1,5 @@
 import { UserRepository } from "../repositories/user.repository";
 import { IUser } from "../services/user.interface";
-import { IProduct } from "../services/product.interface";
 
 export class UserV2Service {
   private userRepository: UserRepository;
@@ -22,17 +21,5 @@ export class UserV2Service {
   }
   public async removeUser(id: number) {
     return await this.userRepository.removeUser(id);
-  }
-  public async getAllProducts() {
-    return await this.userRepository.getProducts();
-  }
-  public async getProductById(id: number) {
-    return await this.userRepository.getProductById(id);
-  }
-  public async saveProduct(product: IProduct, id: number) {
-    return await this.userRepository.saveProduct(product, id);
-  }
-  public async updateProduct(id: number, product: IProduct) {
-    return await this.userRepository.updateProduct(id, product);
   }
 }

@@ -1,14 +1,14 @@
 import express, { Request, Response } from "express";
-import { UserV2Service } from "../services/userV2.service";
-import { errorHandling } from "./error-handling";
+import { ProductV2Service } from "../services/productV2.service";
 import { IProduct } from "../services/product.interface";
+import { errorHandling } from "./error-handling";
 
 export const productRouter: express.Router = express.Router();
-const userV2Service = new UserV2Service();
+const productV2Service = new ProductV2Service();
 
 productRouter.get("", async (req: Request, res: Response) => {
   try {
-    const productList = await userV2Service.getAllProducts();
+    const productList = await productV2Service.getAllProducts();
     res.status(200).json(productList);
   } catch (err) {
     res.status(401).json(err);
@@ -17,7 +17,7 @@ productRouter.get("", async (req: Request, res: Response) => {
 productRouter.get("/:id", async (req: Request, res: Response) => {
   try {
     const id: number = await parseInt(req.params.id, 10);
-    const product = await userV2Service.getProductById(id);
+    const product = await productV2Service.getProductById(id);
     if (product) {
       return res.status(200).json(product);
     } else {
@@ -31,7 +31,7 @@ productRouter.get("/:id", async (req: Request, res: Response) => {
 productRouter.post("", async (req: Request, res: Response) => {
   const userId: number = 1;
   try {
-    const newProduct = await userV2Service.saveProduct(req.body, userId);
+    const newProduct = await productV2Service.saveProduct(req.body, userId);
     res.status(201).json(newProduct);
   } catch (err) {
     res.status(401).json(err);
@@ -40,10 +40,8 @@ productRouter.post("", async (req: Request, res: Response) => {
 productRouter.put("/:id", async (req: Request, res: Response) => {
   try {
     const id: number = parseInt(req.params.id, 10);
-    console.log(id);
-    console.log(req.body);
     const newProduct: IProduct = req.body;
-    const updatedProduct = await userV2Service.updateProduct(id, newProduct);
+    const updatedProduct = await productV2Service.updateProduct(id, newProduct);
     res.status(200).json(updatedProduct);
   } catch (err) {
     res.status(401).json(err);
