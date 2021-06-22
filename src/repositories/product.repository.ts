@@ -38,4 +38,12 @@ export class ProductRepository {
     });
     return okPacket.affectedRows !== 0 ? product : "Invalid product Id";
   }
+  public async removeProduct(id: number): Promise<string> {
+    const okPacket: OkPacket = await this.db.query({
+      sql: `DELETE FROM products WHERE productId='${id}'`,
+    });
+    return okPacket.affectedRows !== 0
+      ? "Successfuly Deleted"
+      : "Invalid product Id!";
+  }
 }

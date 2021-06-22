@@ -47,3 +47,12 @@ productRouter.put("/:id", async (req: Request, res: Response) => {
     res.status(401).json(err);
   }
 });
+productRouter.delete("/:id", async (req: Request, res: Response) => {
+  try {
+    const id: number = parseInt(req.params.id, 10);
+    const removeProduct = await productV2Service.removeProduct(id);
+    res.status(200).json(removeProduct);
+  } catch (err) {
+    res.status(401).json(err);
+  }
+});

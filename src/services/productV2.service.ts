@@ -18,4 +18,7 @@ export class ProductV2Service {
   public async updateProduct(id: number, product: IProduct) {
     return await this.productRepository.updateProduct(id, product);
   }
+  public async removeProduct(id: number) {
+    return await this.productRepository.removeProduct(id);
+  }
 }
