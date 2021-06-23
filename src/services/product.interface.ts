@@ -1,10 +1,10 @@
 export interface IProduct {
-  product_id?: number;
+  productId?: number;
   name: string;
   description: string;
   imagePath: string;
   price: number;
-  createdAt?: Date;
-  isSold?: boolean;
+  created?: Date;
+  sold?: boolean;
   id?: number;
 }
