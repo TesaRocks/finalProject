@@ -29,7 +29,7 @@ productRouter.get("/:id", async (req: Request, res: Response) => {
 });
 
 productRouter.post("", async (req: Request, res: Response) => {
-  const userId: number = 1;
+  const userId: number = 5;
   try {
     const newProduct = await productV2Service.saveProduct(req.body, userId);
     res.status(201).json(newProduct);

@@ -18,26 +18,30 @@ export class UserRepository {
   }
   public async getUserById(index: number): Promise<IUser> {
     const userFound = await this.db.query({
-      sql: `SELECT id,name, email, password FROM user WHERE id = ${index}`,
+      sql: "SELECT id,name, email, password FROM user WHERE id = ?",
+      values: [index],
     });
     return userFound[0];
   }
   public async save(user: IUser): Promise<IUser> {
     const okPacket: OkPacket = await this.db.query({
-      sql: `INSERT INTO user (name, email, password) VALUES('${user.name}', '${user.email}', '${user.password}');`,
+      sql: "INSERT INTO user  SET?;",
+      values: [user],
     });
     user.id = okPacket.insertId;
     return user;
   }
   public async updateUser(id: number, user: IUser): Promise<IUser | string> {
     const okPacket: OkPacket = await this.db.query({
-      sql: `UPDATE user SET name='${user.name}', email='${user.email}', password='${user.password}' WHERE id= '${id}'`,
+      sql: `UPDATE user SET name= ?, email= ?, password= ? WHERE id= ?`,
+      values: [user.name, user.email, user.password, id],
     });
     return okPacket.affectedRows !== 0 ? user : "Invalid user Id";
   }
   public async removeUser(id: number): Promise<string> {
     const okPacket: OkPacket = await this.db.query({
-      sql: `DELETE FROM user WHERE id='${id}'`,
+      sql: `DELETE FROM user WHERE id= ?`,
+      values: [id],
     });
     return okPacket.affectedRows !== 0
       ? "Successfuly Deleted"

@@ -18,13 +18,15 @@ export class ProductRepository {
   }
   public async getProductById(index: number): Promise<IProduct> {
     const productFound = await this.db.query({
-      sql: `SELECT productId,name, description, imagePath, price, created, sold, id FROM products WHERE productId= ${index}`,
+      sql: `SELECT productId,name, description, imagePath, price, created, sold, id FROM products WHERE productId= ?`,
+      values: [index],
     });
     return productFound[0];
   }
   public async saveProduct(product: IProduct, id: number): Promise<IProduct> {
     const okPacket: OkPacket = await this.db.query({
-      sql: `INSERT INTO products (name, description, imagePath, price, id) VALUES('${product.name}', '${product.description}', '${product.imagePath}', '${product.price}', '${id}');`,
+      sql: `INSERT INTO products SET ?;`,
+      values: [product],
     });
     product.productId = okPacket.insertId;
     return product;
@@ -34,13 +36,21 @@ export class ProductRepository {
     product: IProduct
   ): Promise<IProduct | string> {
     const okPacket: OkPacket = await this.db.query({
-      sql: `UPDATE products SET name='${product.name}', description='${product.description}', imagePath='${product.imagePath}', price='${product.price}'  WHERE id= '${id}'`,
+      sql: `UPDATE products SET name= ?, description= ?, imagePath= ?, price= ?  WHERE productId= ?`,
+      values: [
+        product.name,
+        product.description,
+        product.imagePath,
+        product.price,
+        id,
+      ],
     });
     return okPacket.affectedRows !== 0 ? product : "Invalid product Id";
   }
   public async removeProduct(id: number): Promise<string> {
     const okPacket: OkPacket = await this.db.query({
-      sql: `DELETE FROM products WHERE productId='${id}'`,
+      sql: `DELETE FROM products WHERE productId= ?`,
+      values: [id],
     });
     return okPacket.affectedRows !== 0
       ? "Successfuly Deleted"
