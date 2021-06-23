@@ -42,7 +42,6 @@ productRouter.get("/user/:userId", async (req: Request, res: Response) => {
 });
 
 productRouter.post("", async (req: Request, res: Response) => {
-  console.log(req.body);
   try {
     const newProduct = await productV2Service.saveProduct(req.body);
     res.status(201).json(newProduct);
