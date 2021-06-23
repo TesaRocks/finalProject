@@ -12,8 +12,11 @@ export class ProductV2Service {
   public async getProductById(id: number) {
     return await this.productRepository.getProductById(id);
   }
-  public async saveProduct(product: IProduct, id: number) {
-    return await this.productRepository.saveProduct(product, id);
+  public async getProductsByUserId(id: number) {
+    return await this.productRepository.getProductsByUserID(id);
+  }
+  public async saveProduct(product: IProduct) {
+    return await this.productRepository.saveProduct(product);
   }
   public async updateProduct(id: number, product: IProduct) {
     return await this.productRepository.updateProduct(id, product);

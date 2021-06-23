@@ -23,7 +23,14 @@ export class ProductRepository {
     });
     return productFound[0];
   }
-  public async saveProduct(product: IProduct, id: number): Promise<IProduct> {
+  public async getProductsByUserID(userId: number): Promise<IProduct[]> {
+    const productsFound = await this.db.query({
+      sql: `SELECT productId,name, description, imagePath, price, created, sold FROM products WHERE id= ?`,
+      values: [userId],
+    });
+    return productsFound;
+  }
+  public async saveProduct(product: IProduct): Promise<IProduct> {
     const okPacket: OkPacket = await this.db.query({
       sql: `INSERT INTO products SET ?;`,
       values: [product],
