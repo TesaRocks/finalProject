@@ -4,7 +4,5 @@ export interface IProduct {
   description: string;
   imagePath: string;
   price: number;
-  created?: Date;
   sold?: boolean;
-  id?: number;
 }

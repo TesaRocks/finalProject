@@ -23,13 +23,7 @@ export class ProductRepository {
     });
     return productFound[0];
   }
-  public async getProductsByUserID(userId: number): Promise<IProduct[]> {
-    const productsFound = await this.db.query({
-      sql: `SELECT productId,name, description, imagePath, price, created, sold FROM products WHERE id= ?`,
-      values: [userId],
-    });
-    return productsFound;
-  }
+
   public async saveProduct(product: IProduct): Promise<IProduct> {
     const okPacket: OkPacket = await this.db.query({
       sql: `INSERT INTO products SET ?;`,
@@ -39,7 +33,7 @@ export class ProductRepository {
     return product;
   }
   public async updateProduct(
-    id: number,
+    productId: number,
     product: IProduct
   ): Promise<IProduct | string> {
     const okPacket: OkPacket = await this.db.query({
@@ -49,15 +43,15 @@ export class ProductRepository {
         product.description,
         product.imagePath,
         product.price,
-        id,
+        productId,
       ],
     });
     return okPacket.affectedRows !== 0 ? product : "Invalid product Id";
   }
-  public async removeProduct(id: number): Promise<string> {
+  public async removeProduct(productId: number): Promise<string> {
     const okPacket: OkPacket = await this.db.query({
       sql: `DELETE FROM products WHERE productId= ?`,
-      values: [id],
+      values: [productId],
     });
     return okPacket.affectedRows !== 0
       ? "Successfuly Deleted"

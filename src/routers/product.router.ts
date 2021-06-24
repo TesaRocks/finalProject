@@ -27,19 +27,6 @@ productRouter.get("/:id", async (req: Request, res: Response) => {
     res.status(401).json(err);
   }
 });
-productRouter.get("/user/:userId", async (req: Request, res: Response) => {
-  try {
-    const userId: number = await parseInt(req.params.userId, 10);
-    const products = await productV2Service.getProductsByUserId(userId);
-    if (products) {
-      return res.status(200).json(products);
-    } else {
-      return res.status(404).send(errorHandling(undefined));
-    }
-  } catch (err) {
-    res.status(401).json(err);
-  }
-});
 
 productRouter.post("", async (req: Request, res: Response) => {
   try {
