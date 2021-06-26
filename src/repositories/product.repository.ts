@@ -18,7 +18,7 @@ export class ProductRepository {
   }
   public async getProductById(index: number): Promise<IProduct> {
     const productFound = await this.db.query({
-      sql: `SELECT productId,name, description, imagePath, price, created, sold, id FROM products WHERE productId= ?`,
+      sql: `SELECT * FROM products WHERE productId= ?`,
       values: [index],
     });
     return productFound[0];
