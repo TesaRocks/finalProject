@@ -8,7 +8,7 @@ const productV2Service = new ProductV2Service();
 
 productRouter.get("", async (req: Request, res: Response) => {
   try {
-    const page: any = req.query.page;
+    const { page }: any = req.query.page;
     const productListPaginated = await productV2Service.getAllProductsPaginated(
       page
     );

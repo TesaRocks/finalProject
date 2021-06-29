@@ -10,13 +10,15 @@ export class ProductRepository {
     this.db = container.resolve<Db>(Db);
   }
 
-  public async getProductsPaginated(pageNumber: number): Promise<IProduct[]> {
-    const productsPerPage: number = 4;
-    const offsetValue: number = (pageNumber - 1) * productsPerPage;
+  public async getProductsPaginated(
+    pageNumber: number = 1,
+    itemsPerPage: number = 4
+  ): Promise<IProduct[]> {
+    const offsetValue: number = (pageNumber - 1) * itemsPerPage;
 
     const paginatedProductList = await this.db.query({
       sql: "SELECT * FROM products LIMIT ? OFFSET ?",
-      values: [productsPerPage, offsetValue],
+      values: [itemsPerPage, offsetValue],
     });
 
     return paginatedProductList;

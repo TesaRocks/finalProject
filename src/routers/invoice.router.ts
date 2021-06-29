@@ -7,7 +7,7 @@ const invoiceV2Service = new InvoiceV2Service();
 
 invoiceRouter.get("", async (req: Request, res: Response) => {
   try {
-    const page: any = req.query.page;
+    const { page }: any = req.query.page;
     const invoiceListPaginated = await invoiceV2Service.getAllInvoicesPaginated(
       page
     );
