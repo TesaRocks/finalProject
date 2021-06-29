@@ -1,4 +1,5 @@
 export interface IInvoice {
+  invoiceDetailId: number;
   date: Date;
   customerName: string;
   productName: string;
