@@ -16,4 +16,13 @@ export class InvoiceDetailRepository {
     });
     return invoiceDetailList;
   }
+  // public async save(invoiceId:number, productId:number, quantity:number): Promise<IInvoiceDetail> {
+
+  //   const okPacket: OkPacket = await this.db.query({
+  //     sql: "INSERT INTO invoiceDetail  SET?;",
+  //     values: [invoiceId, productId, quantity],
+  //   });
+  //   invoiceDetail.invoiceDetailId = okPacket.insertId;
+  //   return invoiceDetail;
+  // }
 }
