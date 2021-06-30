@@ -23,6 +23,14 @@ export class InvoiceRepository {
     });
     return paginatedInvoiceList;
   }
+  public async save(invoice: IInvoice): Promise<IInvoice> {
+    const okPacket: OkPacket = await this.db.query({
+      sql: "INSERT INTO invoice  SET?;",
+      values: [invoice],
+    });
+    invoice.invoiceId = okPacket.insertId;
+    return invoice;
+  }
   public async getInvoiceDetail(invoiceId: number): Promise<IInvoiceDetail[]> {
     const invoiceDetailList = await this.db.query({
       sql: "SELECT invoiceDetail.invoiceDetailId, products.name, products.description,invoiceDetail.quantity, products.price FROM invoiceDetail INNER JOIN products on invoiceDetail.productId = products.productId INNER JOIN invoice on invoiceDetail.invoiceId = invoice.invoiceId WHERE invoice.invoiceId = ?",
