@@ -25,7 +25,7 @@ invoiceRouter.get(
   }
 );
 invoiceRouter.get(
-  "/:id",
+  "/detail/:id",
   param("id").exists().isNumeric(),
   async (req: Request, res: Response) => {
     const errors = validationResult(req);
