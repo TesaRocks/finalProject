@@ -1,7 +1,10 @@
 import { OkPacket } from "mysql";
 import { container } from "tsyringe";
 import { Db } from "./Db";
-import { IInvoice } from "../services/invoice-invoiceDetail.interface";
+import {
+  IInvoice,
+  IInvoiceDetail,
+} from "../services/invoice-invoiceDetail.interface";
 export class InvoiceRepository {
   private db: Db;
 
@@ -28,4 +31,20 @@ export class InvoiceRepository {
     invoice.invoiceId = okPacket.insertId;
     return invoice;
   }
+  public async getInvoiceDetail(invoiceId: number): Promise<IInvoiceDetail[]> {
+    const invoiceDetailList = await this.db.query({
+      sql: "SELECT invoiceDetail.invoiceDetailId, products.name, products.description,invoiceDetail.quantity, products.price FROM invoiceDetail INNER JOIN products on invoiceDetail.productId = products.productId INNER JOIN invoice on invoiceDetail.invoiceId = invoice.invoiceId WHERE invoice.invoiceId = ?",
+      values: invoiceId,
+    });
+    return invoiceDetailList;
+  }
+  // public async save(invoiceId:number, productId:number, quantity:number): Promise<IInvoiceDetail> {
+
+  //   const okPacket: OkPacket = await this.db.query({
+  //     sql: "INSERT INTO invoiceDetail  SET?;",
+  //     values: [invoiceId, productId, quantity],
+  //   });
+  //   invoiceDetail.invoiceDetailId = okPacket.insertId;
+  //   return invoiceDetail;
+  // }
 }
