@@ -1,7 +1,7 @@
 import { OkPacket } from "mysql";
 import { container } from "tsyringe";
 import { Db } from "./Db";
-import { IInvoice } from "../services/invoice.interface";
+import { IInvoice, IItem } from "../services/invoice.interface";
 export class InvoiceRepository {
   private db: Db;
 
@@ -28,11 +28,12 @@ export class InvoiceRepository {
     invoice.invoiceId = okPacket.insertId;
     return invoice;
   }
-  public async getInvoiceDetail(invoiceId: number): Promise<IInvoice[]> {
+  public async getInvoiceDetail(invoiceId: number): Promise<IInvoice> {
     const invoiceDetailList = await this.db.query({
       sql: "SELECT invoiceDetail.invoiceDetailId, products.name, products.description,invoiceDetail.quantity, products.price FROM invoiceDetail INNER JOIN products on invoiceDetail.productId = products.productId INNER JOIN invoice on invoiceDetail.invoiceId = invoice.invoiceId WHERE invoice.invoiceId = ?",
       values: invoiceId,
     });
+
     return invoiceDetailList;
   }
   // public async save(invoiceId:number, productId:number, quantity:number): Promise<IInvoiceDetail> {
