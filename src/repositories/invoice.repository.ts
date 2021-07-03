@@ -1,7 +1,7 @@
 import { OkPacket } from "mysql";
 import { container } from "tsyringe";
 import { Db } from "./Db";
-import { IInvoice, IItem } from "../services/invoice.interface";
+import { IInvoice } from "../services/invoice.interface";
 export class InvoiceRepository {
   private db: Db;
 
