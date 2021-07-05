@@ -45,21 +45,4 @@ export class InvoiceRepository {
 
     return invoiceByIdFinal;
   }
-  // public async save(invoice: IInvoice): Promise<IInvoice> {
-  //   const okPacket: OkPacket = await this.db.query({
-  //     sql: "INSERT INTO invoice  SET?;",
-  //     values: [invoice],
-  //   });
-  //   invoice.invoiceId = okPacket.insertId;
-  //   return invoice;
-  // }
-  // public async save(invoiceId:number, productId:number, quantity:number): Promise<IInvoiceDetail> {
-
-  //   const okPacket: OkPacket = await this.db.query({
-  //     sql: "INSERT INTO invoiceDetail  SET?;",
-  //     values: [invoiceId, productId, quantity],
-  //   });
-  //   invoiceDetail.invoiceDetailId = okPacket.insertId;
-  //   return invoiceDetail;
-  // }
 }
