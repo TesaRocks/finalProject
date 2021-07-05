@@ -34,7 +34,7 @@ invoiceRouter.get(
     }
     try {
       const id: number = await parseInt(req.params.id, 10);
-      const invoiceDetailList = await invoiceV2Service.getInvoiceDetail(id);
+      const invoiceDetailList = await invoiceV2Service.getInvoiceById(id);
       if (invoiceDetailList != undefined) {
         return res.status(200).json(invoiceDetailList);
       } else {
