@@ -23,6 +23,13 @@ export class ProductRepository {
 
     return paginatedProductList;
   }
+  public async getProducts(): Promise<IProduct[]> {
+    const productList = await this.db.query({
+      sql: "SELECT * FROM products ",
+    });
+
+    return productList;
+  }
   public async getProductById(index: number): Promise<IProduct> {
     const productFound = await this.db.query({
       sql: `SELECT * FROM products WHERE productId= ?`,

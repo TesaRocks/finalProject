@@ -25,6 +25,14 @@ productRouter.get(
     }
   }
 );
+productRouter.get("/all", async (req: Request, res: Response) => {
+  try {
+    const productList = await productV2Service.getProducts();
+    res.status(200).json(productList);
+  } catch (err) {
+    res.status(401).json(err);
+  }
+});
 productRouter.get(
   "/:id",
   param("id").exists().isNumeric(),

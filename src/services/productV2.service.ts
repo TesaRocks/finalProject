@@ -9,6 +9,9 @@ export class ProductV2Service {
   public async getAllProductsPaginated(pageNumber: number) {
     return await this.productRepository.getProductsPaginated(pageNumber);
   }
+  public async getProducts() {
+    return await this.productRepository.getProducts();
+  }
   public async getProductById(id: number) {
     return await this.productRepository.getProductById(id);
   }
