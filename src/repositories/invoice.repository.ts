@@ -26,6 +26,7 @@ export class InvoiceRepository {
       sql: "SELECT invoice.invoiceId,invoice.date,invoice.customerName, invoiceDetail.invoiceDetailId, products.productId, products.name, products.description,invoiceDetail.quantity, products.price FROM invoiceDetail INNER JOIN products on invoiceDetail.productId = products.productId INNER JOIN invoice on invoiceDetail.invoiceId = invoice.invoiceId WHERE invoice.invoiceId = ?",
       values: invoiceId,
     });
+    // Making an invoice Object according to its interface
     const detailResult: IItem[] = [];
     for (let i = 0; i < invoiceById.length; i++) {
       detailResult[i] = {
@@ -53,6 +54,7 @@ export class InvoiceRepository {
     });
     invoice.invoiceId = okPacketInvoice.insertId;
 
+    // Iterate over the list of products given
     for (let product of invoice.invoiceItems) {
       const okPacketInvoiceDetail: OkPacket = await this.db.query({
         sql: "INSERT INTO invoiceDetail SET invoiceId = ?, productId = ?, quantity = ?",
