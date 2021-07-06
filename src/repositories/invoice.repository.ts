@@ -23,13 +23,14 @@ export class InvoiceRepository {
 
   public async getInvoiceById(invoiceId: number): Promise<IInvoice> {
     const invoiceById = await this.db.query({
-      sql: "SELECT invoice.invoiceId,invoice.date,invoice.customerName, invoiceDetail.invoiceDetailId, products.name, products.description,invoiceDetail.quantity, products.price FROM invoiceDetail INNER JOIN products on invoiceDetail.productId = products.productId INNER JOIN invoice on invoiceDetail.invoiceId = invoice.invoiceId WHERE invoice.invoiceId = ?",
+      sql: "SELECT invoice.invoiceId,invoice.date,invoice.customerName, invoiceDetail.invoiceDetailId, products.productId, products.name, products.description,invoiceDetail.quantity, products.price FROM invoiceDetail INNER JOIN products on invoiceDetail.productId = products.productId INNER JOIN invoice on invoiceDetail.invoiceId = invoice.invoiceId WHERE invoice.invoiceId = ?",
       values: invoiceId,
     });
     const detailResult: IItem[] = [];
     for (let i = 0; i < invoiceById.length; i++) {
       detailResult[i] = {
         invoiceDetailId: invoiceById[i]["invoiceDetailId"],
+        productId: invoiceById[i]["productId"],
         name: invoiceById[i]["name"],
         description: invoiceById[i]["description"],
         quantity: invoiceById[i]["quantity"],
@@ -45,15 +46,20 @@ export class InvoiceRepository {
 
     return invoiceByIdFinal;
   }
-  // public async saveInvoice(invoice: IInvoice): Promise<IInvoice> {
-  //   const okPacket: OkPacket = await this.db.query({
-  //     sql: "INSERT INTO invoice  SET?;",
-  //     values: [invoice.customerName],
-  //   });
-  //   invoice.invoiceId = okPacket.insertId;
-  //   const okPacket2:OkPacket = await this.db.query({
-  //     sql: "INSERT INTO invoiceDetail(invoiceId, productId, quantity) VALUES ?",
-  //     values:[invoice.invoiceId, invoice.invoiceItems[0].]
-  //   })
-  // }
+  public async saveInvoice(invoice: IInvoice): Promise<IInvoice> {
+    const okPacketInvoice: OkPacket = await this.db.query({
+      sql: "INSERT INTO invoice SET customerName=?;",
+      values: [invoice.customerName],
+    });
+    invoice.invoiceId = okPacketInvoice.insertId;
+
+    for (let product of invoice.invoiceItems) {
+      const okPacketInvoiceDetail: OkPacket = await this.db.query({
+        sql: "INSERT INTO invoiceDetail SET invoiceId = ?, productId = ?, quantity = ?",
+        values: [invoice.invoiceId, product.productId, product.quantity],
+      });
+      product.invoiceDetailId = okPacketInvoiceDetail.insertId;
+    }
+    return invoice;
+  }
 }
