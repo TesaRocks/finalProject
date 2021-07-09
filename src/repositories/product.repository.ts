@@ -12,7 +12,7 @@ export class ProductRepository {
 
   public async getProductsPaginated(
     pageNumber: number = 1,
-    itemsPerPage: number = 4
+    itemsPerPage: number = 6
   ): Promise<IProduct[]> {
     const offsetValue: number = (pageNumber - 1) * itemsPerPage;
 
