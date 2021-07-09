@@ -6,7 +6,10 @@ export class ProductV2Service {
   constructor() {
     this.productRepository = new ProductRepository();
   }
-  public async getAllProducts() {
+  public async getAllProductsPaginated(pageNumber: number) {
+    return await this.productRepository.getProductsPaginated(pageNumber);
+  }
+  public async getProducts() {
     return await this.productRepository.getProducts();
   }
   public async getProductById(id: number) {

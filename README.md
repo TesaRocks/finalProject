@@ -1,12 +1,28 @@
-# finalProject
+# Project made with Typescript, Node.Js, Express.Js, MySql
 
-## Brief description about this wonderful project
+## Front end of the project @ https://github.com/TesaRocks/final-project-front-end Made by myself. Please have a look
 
-### This project is developed using TypeScript and Express. Under development it runs Nodemon. Please have a look at the following script:
+## General guidelines:
 
-```"start": "nodemon --watch './\*\*/_.ts' --exec 'ts-node' src/index.ts"```
+- Structure: Repositores => Services => Routers => Index
+- Docker yml file containing a MySQl image.
+- Naming variables is with camelCase formatting, being very descriptive with the naming.
 
-#### *Index.ts* file is the starting point at development. It is fed with **userRouter.ts** where all the routes are set.  Within this file, we have the CRUD API's for successfully creating, updating, listing, searching and deleting users. Users have been modelized under a interface called **IUser** which is imported from the **user.interface.ts** file.
-#### As well, the heavy logic of implementing this CRUD API's is performed under a **user.service.ts** file which is imported as well.
+### Repositories:
 
-### To test the above API's I have used **POSTMAN**. Please don't hesitate in asking for the collections made.
+- Db.ts creates connection to MySql using TSyringe (A lightweight dependency injection container for TypeScript for constructor injection.)
+- One repository per feature.
+- Pagination is made by obtaining a slice of the DataBase.
+- To avoid sql injection attacks I use "?" and at the Query Options "values" property I place the user values.
+
+### Service:
+
+- Each repository has it's own service.
+- There is a model interface as per each feature.
+
+### Routers:
+
+- Each repository has it's own Router.
+- Through "express-validator" middleware I validate user's inputs.
+
+#### To test the all of the API's I have used **POSTMAN**.

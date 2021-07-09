@@ -4,5 +4,4 @@ export interface IProduct {
   description: string;
   imagePath: string;
   price: number;
-  sold?: boolean;
 }
