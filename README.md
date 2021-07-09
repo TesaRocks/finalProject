@@ -4,10 +4,9 @@
 
 ## General guidelines:
 
-- Structure: Repositores => Serivecs => Routers => Index
+- Structure: Repositores => Services => Routers => Index
 - Docker yml file containing a MySQl image.
 - Naming variables is with camelCase formatting, being very descriptive with the naming.
-- Avoiding hard coded values always.
 
 ### Repositories:
 
