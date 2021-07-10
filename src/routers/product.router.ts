@@ -7,6 +7,14 @@ import { body, query, param, validationResult } from "express-validator";
 export const productRouter: express.Router = express.Router();
 const productV2Service = new ProductV2Service();
 
+productRouter.get("/count", async (req: Request, res: Response) => {
+  try {
+    const totalProducts = await productV2Service.countProducts();
+    res.status(200).json(totalProducts);
+  } catch (err) {
+    res.status(401).json(err);
+  }
+});
 productRouter.get(
   "",
   query("page").exists().isNumeric(),

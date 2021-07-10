@@ -15,6 +15,9 @@ export class ProductV2Service {
   public async getProductById(id: number) {
     return await this.productRepository.getProductById(id);
   }
+  public async countProducts() {
+    return await this.productRepository.countProducts();
+  }
 
   public async saveProduct(product: IProduct) {
     return await this.productRepository.saveProduct(product);

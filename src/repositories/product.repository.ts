@@ -30,6 +30,13 @@ export class ProductRepository {
 
     return productList;
   }
+  public async countProducts(): Promise<number> {
+    const totalProductRaw = await this.db.query({
+      sql: "SELECT COUNT(*) FROM products",
+    });
+    const totalProducts = totalProductRaw[0]["COUNT(*)"];
+    return totalProducts;
+  }
   public async getProductById(index: number): Promise<IProduct> {
     const productFound = await this.db.query({
       sql: `SELECT * FROM products WHERE productId= ?`,
