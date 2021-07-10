@@ -6,6 +6,14 @@ import { body, param, query, validationResult } from "express-validator";
 export const invoiceRouter: express.Router = express.Router();
 const invoiceV2Service = new InvoiceV2Service();
 
+invoiceRouter.get("/count", async (req: Request, res: Response) => {
+  try {
+    const totalInvoices = await invoiceV2Service.countInvoices();
+    res.status(200).json(totalInvoices);
+  } catch (err) {
+    res.status(401).json(err);
+  }
+});
 invoiceRouter.get(
   "",
   query("page").exists().isNumeric(),

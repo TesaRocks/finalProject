@@ -12,6 +12,9 @@ export class InvoiceV2Service {
   public async getInvoiceById(invoiceId: number) {
     return await this.invoiceRepository.getInvoiceById(invoiceId);
   }
+  public async countInvoices() {
+    return await this.invoiceRepository.countInvoices();
+  }
   public async saveInvoice(invoice: IInvoice) {
     return await this.invoiceRepository.saveInvoice(invoice);
   }

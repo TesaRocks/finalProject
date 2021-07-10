@@ -48,6 +48,13 @@ export class InvoiceRepository {
 
     return invoiceByIdFinal;
   }
+  public async countInvoices(): Promise<number> {
+    const totalInvoicesRaw = await this.db.query({
+      sql: "SELECT COUNT(*) FROM invoice",
+    });
+    const totalInvoices = totalInvoicesRaw[0]["COUNT(*)"];
+    return totalInvoices;
+  }
   public async saveInvoice(invoice: IInvoice): Promise<IInvoice> {
     const okPacketInvoice: OkPacket = await this.db.query({
       sql: "INSERT INTO invoice SET customerName=?;",
