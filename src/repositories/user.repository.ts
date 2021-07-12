@@ -21,7 +21,12 @@ export class UserRepository {
       sql: "SELECT id,name, email, password FROM user WHERE id = ?",
       values: [index],
     });
-    return userFound[0];
+    const userById: IUser = {
+      id: userFound[0].id,
+      name: userFound[0].name,
+      email: userFound[0].email,
+    };
+    return userById;
   }
   public async save(user: IUser): Promise<IUser> {
     const okPacket: OkPacket = await this.db.query({
@@ -46,5 +51,16 @@ export class UserRepository {
     return okPacket.affectedRows !== 0
       ? "Successfuly Deleted"
       : "Invalid user Id";
+  }
+  public async login(user: IUser): Promise<IUser | string> {
+    const okPacketEmail: OkPacket = await this.db.query({
+      sql: "SELECT email from user WHERE email = ?",
+      values: user.email,
+    });
+    const okPacketPassword: OkPacket = await this.db.query({
+      sql: "SELECT password from user WHERE password = ?",
+      values: user.password,
+    });
+    return user;
   }
 }
