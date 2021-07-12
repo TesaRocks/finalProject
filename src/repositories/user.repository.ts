@@ -28,6 +28,14 @@ export class UserRepository {
     };
     return userById;
   }
+  public async getUser(user: IUser): Promise<boolean> {
+    const userToMatch = await this.db.query({
+      sql: `SELECT  * FROM user WHERE name = ? AND email = ? AND password = ?`,
+      values: [user.name, user.email, user.password],
+    });
+    console.log(userToMatch);
+    return userToMatch ? true : false;
+  }
   public async save(user: IUser): Promise<IUser> {
     const okPacket: OkPacket = await this.db.query({
       sql: "INSERT INTO user  SET?;",

@@ -76,12 +76,20 @@ userRouter.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    // try {
-    //   const login = await userV2Service.save(req.body);
-    //   res.status(201).json(newUser);
-    // } catch (err) {
-    //   res.status(401).json(err);
-    // }
+    try {
+      const saltRounds = 8;
+      const { name, email, password } = req.body;
+      const hashedPassword = await hash(password, saltRounds);
+      const loggedUser: IUser = {
+        name: name,
+        email: email,
+        password: hashedPassword,
+      };
+      const userToCheck: boolean = await userV2Service.getUser(loggedUser);
+      res.status(201).json(userToCheck);
+    } catch (err) {
+      res.status(401).json(err);
+    }
   }
 );
 

@@ -13,6 +13,9 @@ export class UserV2Service {
   public async getUserById(id: number) {
     return await this.userRepository.getUserById(id);
   }
+  public async getUser(user: IUser) {
+    return await this.userRepository.getUser(user);
+  }
   public async save(user: IUser) {
     return await this.userRepository.save(user);
   }
