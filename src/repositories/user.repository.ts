@@ -18,23 +18,23 @@ export class UserRepository {
   }
   public async getUserById(index: number): Promise<IUser> {
     const userFound = await this.db.query({
-      sql: "SELECT id,name, email, password FROM user WHERE id = ?",
+      sql: "SELECT id,name, email FROM user WHERE id = ?",
       values: [index],
     });
     const userById: IUser = {
       id: userFound[0].id,
       name: userFound[0].name,
       email: userFound[0].email,
+      password: "",
     };
     return userById;
   }
-  public async getUser(user: IUser): Promise<boolean> {
-    const userToMatch = await this.db.query({
-      sql: `SELECT  * FROM user WHERE name = ? AND email = ? AND password = ?`,
-      values: [user.name, user.email, user.password],
+  public async getUserbyEmail(email: string): Promise<IUser> {
+    const userToLog = await this.db.query({
+      sql: `SELECT  * FROM user WHERE  email = ? `,
+      values: [email],
     });
-    console.log(userToMatch);
-    return userToMatch ? true : false;
+    return userToLog[0];
   }
   public async save(user: IUser): Promise<IUser> {
     const okPacket: OkPacket = await this.db.query({

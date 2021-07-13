@@ -3,7 +3,7 @@ import { UserV2Service } from "../services/userV2.service";
 import { IUser } from "../services/user.interface";
 import { body, param, validationResult } from "express-validator";
 import { errorHandling } from "./error-handling";
-import { hash, genSalt } from "bcrypt";
+import { compare, hash } from "bcrypt";
 
 export const userRouter: express.Router = express.Router();
 
@@ -17,23 +17,24 @@ userRouter.get("", async (req: Request, res: Response) => {
     res.status(401).json(err);
   }
 });
-
 userRouter.get(
   "/:id",
-  param("id").exists().isNumeric(),
+  param("id").isNumeric(),
   async (req: Request, res: Response) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
     try {
-      const id: number = await parseInt(req.params.id, 10);
-      const user = await userV2Service.getUserById(id);
-      if (user != undefined) {
-        return res.status(200).json(user);
-      } else {
-        return res.status(404).send(errorHandling(undefined));
-      }
+      const id: number = parseInt(req.params.id, 10);
+      await userV2Service
+        .getUserById(id)
+        .then((result) => {
+          return res.status(200).json(result);
+        })
+        .catch((err) => {
+          return res.status(404).send(errorHandling("wrongId"));
+        });
     } catch (err) {
       res.status(401).json(err);
     }
@@ -44,7 +45,7 @@ userRouter.post(
   "",
   body("name").exists().isLength({ max: 45 }),
   body("email").exists().isEmail(),
-  body("password").isLength({ min: 6, max: 20 }),
+  body("password").exists().isLength({ min: 6, max: 20 }),
   async (req: Request, res: Response) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -76,17 +77,21 @@ userRouter.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
+
     try {
-      const saltRounds = 8;
       const { name, email, password } = req.body;
-      const hashedPassword = await hash(password, saltRounds);
-      const loggedUser: IUser = {
-        name: name,
-        email: email,
-        password: hashedPassword,
-      };
-      const userToCheck: boolean = await userV2Service.getUser(loggedUser);
-      res.status(201).json(userToCheck);
+      await userV2Service.getUserByEmail(email).then((result) => {
+        if (result !== undefined) {
+          // Compare names
+          if (result.name !== name)
+            return res.status(404).send(errorHandling("noName"));
+          // bcrypt compare passwords
+          compare(password, result.password).then(function (result) {
+            if (result) return res.status(200).json({ token: "capos" });
+            else return res.status(404).send(errorHandling("noPassword"));
+          });
+        } else return res.status(404).send(errorHandling("noEmail"));
+      });
     } catch (err) {
       res.status(401).json(err);
     }
@@ -107,9 +112,16 @@ userRouter.put(
       return res.status(400).json({ errors: errors.array() });
     }
     try {
+      const saltRounds = 8;
+      const { name, email, password } = req.body;
+      const hashedPassword = await hash(password, saltRounds);
+      const userToUpdate: IUser = {
+        name: name,
+        email: email,
+        password: hashedPassword,
+      };
       const id: number = parseInt(req.params.id, 10);
-      const newUser: IUser = req.body;
-      const updatedUser = await userV2Service.updateUser(id, newUser);
+      const updatedUser = await userV2Service.updateUser(id, userToUpdate);
       res.status(200).json(updatedUser);
     } catch (err) {
       res.status(401).json(err);
