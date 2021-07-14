@@ -60,15 +60,4 @@ export class UserRepository {
       ? "Successfuly Deleted"
       : "Invalid user Id";
   }
-  public async login(user: IUser): Promise<IUser | string> {
-    const okPacketEmail: OkPacket = await this.db.query({
-      sql: "SELECT email from user WHERE email = ?",
-      values: user.email,
-    });
-    const okPacketPassword: OkPacket = await this.db.query({
-      sql: "SELECT password from user WHERE password = ?",
-      values: user.password,
-    });
-    return user;
-  }
 }

@@ -4,12 +4,19 @@ import { IUser } from "../services/user.interface";
 import { body, param, validationResult } from "express-validator";
 import { errorHandling } from "./error-handling";
 import { compare, hash } from "bcrypt";
+import { sign } from "jsonwebtoken";
+import { tokenSecret } from "../keys";
+import { verify } from "../middleware";
 
 export const userRouter: express.Router = express.Router();
 
 const userV2Service = new UserV2Service();
 
-userRouter.get("", async (req: Request, res: Response) => {
+function generateToken() {
+  return sign({ check: true }, tokenSecret, { expiresIn: "1d" });
+}
+
+userRouter.get("", verify, async (req: Request, res: Response) => {
   try {
     const usersList = await userV2Service.getAll();
     res.status(200).json(usersList);
@@ -19,7 +26,7 @@ userRouter.get("", async (req: Request, res: Response) => {
 });
 userRouter.get(
   "/:id",
-  param("id").isNumeric(),
+  param("id").exists().isNumeric(),
   async (req: Request, res: Response) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -80,14 +87,17 @@ userRouter.post(
 
     try {
       const { name, email, password } = req.body;
-      await userV2Service.getUserByEmail(email).then((result) => {
-        if (result !== undefined) {
+      await userV2Service.getUserByEmail(email).then((user) => {
+        if (user !== undefined) {
           // Compare names
-          if (result.name !== name)
+          if (user.name !== name)
             return res.status(404).send(errorHandling("noName"));
           // bcrypt compare passwords
-          compare(password, result.password).then(function (result) {
-            if (result) return res.status(200).json({ token: "capos" });
+          compare(password, user.password).then(function (check) {
+            if (check)
+              return res
+                .status(200)
+                .json({ message: "Success", token: generateToken() });
             else return res.status(404).send(errorHandling("noPassword"));
           });
         } else return res.status(404).send(errorHandling("noEmail"));

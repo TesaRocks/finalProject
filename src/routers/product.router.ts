@@ -55,7 +55,7 @@ productRouter.get(
       if (product) {
         return res.status(200).json(product);
       } else {
-        return res.status(404).send(errorHandling(undefined));
+        return res.status(404).send(errorHandling("wrongId"));
       }
     } catch (err) {
       res.status(401).json(err);

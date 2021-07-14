@@ -1,7 +1,7 @@
 export function errorHandling(err: any) {
   switch (err) {
     case "wrongId":
-      return "No user with the given ID";
+      return "No match with the given ID";
     case "noEmail":
       return "Email not found";
     case "noPassword":

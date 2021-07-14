@@ -46,7 +46,7 @@ invoiceRouter.get(
       if (invoiceDetailList != undefined) {
         return res.status(200).json(invoiceDetailList);
       } else {
-        return res.status(404).send(errorHandling(undefined));
+        return res.status(404).send(errorHandling("wrongId"));
       }
     } catch (err) {
       res.status(401).json(err);
