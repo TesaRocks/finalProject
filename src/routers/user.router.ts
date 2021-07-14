@@ -6,7 +6,7 @@ import { errorHandling } from "./error-handling";
 import { compare, hash } from "bcrypt";
 import { sign } from "jsonwebtoken";
 import { tokenSecret } from "../keys";
-import { verify } from "../middleware";
+import { verifyToken } from "../middleware";
 
 export const userRouter: express.Router = express.Router();
 
@@ -16,7 +16,7 @@ function generateToken() {
   return sign({ check: true }, tokenSecret, { expiresIn: "1d" });
 }
 
-userRouter.get("", verify, async (req: Request, res: Response) => {
+userRouter.get("", verifyToken, async (req: Request, res: Response) => {
   try {
     const usersList = await userV2Service.getAll();
     res.status(200).json(usersList);
