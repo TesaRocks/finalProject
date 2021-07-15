@@ -18,7 +18,7 @@ export const verifyToken = (
       if (err)
         return res.status(500).json({ error: "failed to authenticate token" });
       else {
-        req.body = decoded;
+        //req.body = decoded;
         next();
       }
     });
