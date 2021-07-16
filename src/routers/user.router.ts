@@ -27,6 +27,7 @@ userRouter.get("", verifyToken, async (req: Request, res: Response) => {
 userRouter.get(
   "/:id",
   param("id").exists().isNumeric(),
+  verifyToken,
   async (req: Request, res: Response) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
