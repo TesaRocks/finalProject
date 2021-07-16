@@ -77,7 +77,6 @@ userRouter.post(
 );
 userRouter.post(
   "/login",
-  body("name").exists().isLength({ max: 45 }),
   body("email").exists().isEmail(),
   body("password").isLength({ min: 6, max: 20 }),
   async (req: Request, res: Response) => {
@@ -87,18 +86,17 @@ userRouter.post(
     }
 
     try {
-      const { name, email, password } = req.body;
+      const { email, password } = req.body;
       await userV2Service.getUserByEmail(email).then((user) => {
         if (user !== undefined) {
-          // Compare names
-          if (user.name !== name)
-            return res.status(404).send(errorHandling("noName"));
           // bcrypt compare passwords
           compare(password, user.password).then(function (check) {
             if (check)
-              return res
-                .status(200)
-                .json({ message: "Success", token: generateToken() });
+              return res.status(200).json({
+                message: "Success",
+                token: generateToken(),
+                expiresIn: new Date(Date.now() + 3600 * 1000 * 24).getTime(),
+              });
             else return res.status(404).send(errorHandling("noPassword"));
           });
         } else return res.status(404).send(errorHandling("noEmail"));
