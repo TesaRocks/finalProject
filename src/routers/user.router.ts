@@ -54,6 +54,7 @@ userRouter.post(
   body("name").exists().isLength({ max: 45 }),
   body("email").exists().isEmail(),
   body("password").exists().isLength({ min: 6, max: 20 }),
+  verifyToken,
   async (req: Request, res: Response) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -116,6 +117,7 @@ userRouter.put(
     body("email").exists().isEmail(),
     body("password").isLength({ min: 6, max: 20 }),
   ],
+  verifyToken,
   async (req: Request, res: Response) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -142,6 +144,7 @@ userRouter.put(
 userRouter.delete(
   "/:id",
   param("id").exists().isNumeric(),
+  verifyToken,
   async (req: Request, res: Response) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
