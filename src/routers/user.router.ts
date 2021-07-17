@@ -93,6 +93,7 @@ userRouter.post(
           compare(password, user.password).then(function (check) {
             if (check)
               return res.status(200).json({
+                id: user.id,
                 message: "Success",
                 token: generateToken(),
                 expiresIn: new Date(Date.now() + 3600 * 1000 * 24).getTime(),
