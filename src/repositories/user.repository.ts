@@ -47,7 +47,7 @@ export class UserRepository {
   }
   public async updateUser(id: number, user: IUser): Promise<IUser | string> {
     const okPacket: OkPacket = await this.db.query({
-      sql: `UPDATE user SET name= ?, email= ?, password= ?, role=?, WHERE id= ?`,
+      sql: `UPDATE user SET name= ?, email= ?, password= ?, role= ? WHERE id= ?`,
       values: [user.name, user.email, user.password, user.role, id],
     });
     return okPacket.affectedRows !== 0 ? user : "Invalid user Id";
