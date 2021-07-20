@@ -54,6 +54,7 @@ userRouter.post(
   body("name").exists().isLength({ max: 45 }),
   body("email").exists().isEmail(),
   body("password").exists().isLength({ min: 6, max: 20 }),
+  body("role").exists().isLength({ min: 5, max: 5 }),
   verifyToken,
   async (req: Request, res: Response) => {
     const errors = validationResult(req);
@@ -62,12 +63,13 @@ userRouter.post(
     }
     try {
       const saltRounds = 8;
-      const { name, email, password } = req.body;
+      const { name, email, password, role } = req.body;
       const hashedPassword = await hash(password, saltRounds);
       const saveNewUser: IUser = {
         name: name,
         email: email,
         password: hashedPassword,
+        role: role,
       };
       const newUser = await userV2Service.save(saveNewUser);
       res.status(201).json(newUser);
@@ -116,6 +118,7 @@ userRouter.put(
     body("name").exists().isLength({ max: 45 }),
     body("email").exists().isEmail(),
     body("password").isLength({ min: 6, max: 20 }),
+    body("role").exists().isLength({ min: 5, max: 5 }),
   ],
   verifyToken,
   async (req: Request, res: Response) => {
@@ -125,12 +128,13 @@ userRouter.put(
     }
     try {
       const saltRounds = 8;
-      const { name, email, password } = req.body;
+      const { name, email, password, role } = req.body;
       const hashedPassword = await hash(password, saltRounds);
       const userToUpdate: IUser = {
         name: name,
         email: email,
         password: hashedPassword,
+        role: role,
       };
       const id: number = parseInt(req.params.id, 10);
       const updatedUser = await userV2Service.updateUser(id, userToUpdate);
