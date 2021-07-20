@@ -100,6 +100,7 @@ userRouter.post(
                 message: "Success",
                 token: generateToken(),
                 expiresIn: new Date(Date.now() + 3600 * 1000 * 24).getTime(),
+                role: user.role,
               });
             else return res.status(404).send(errorHandling("noPassword"));
           });
