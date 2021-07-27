@@ -24,5 +24,7 @@
 
 - Each repository has it's own Router.
 - Through "express-validator" middleware I validate user's inputs.
+- Json web tokens are created and verified before delivering mysql data.
+- Passwords are stored as hash strings using bcrypt library.
 
 #### To test the all of the API's I have used **POSTMAN**.
