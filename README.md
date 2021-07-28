@@ -7,6 +7,7 @@
 - Structure: Repositores => Services => Routers => Index
 - Docker yml file containing a MySQl image.
 - Naming variables is with camelCase formatting, being very descriptive with the naming.
+- I tried to mantain a SOLID principle when coding.
 
 ### Repositories:
 
