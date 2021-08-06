@@ -13,7 +13,6 @@ export class LikeRepository {
       sql: "select  products.productId, products.name, products.description, products.price,products.imagePath from productLike inner join products on productLike.productId = products.productId inner join user on productLike.id = user.id where user.id=?",
       values: userId,
     });
-    console.log(likesByUserId);
 
     return likesByUserId;
   }
