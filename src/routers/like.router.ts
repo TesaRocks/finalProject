@@ -38,8 +38,11 @@ likeRouter.post(
     }
     try {
       const { productId, userId } = req.body;
-      const newLike = await likeV2Service.newLike(productId, userId);
-      res.status(200).json(newLike);
+      const newLikeResponseStatus = await likeV2Service.newLike(
+        productId,
+        userId
+      );
+      res.status(200).json(newLikeResponseStatus);
     } catch (err) {
       res.status(401).json(err);
     }
