@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import { errorHandling } from "./error-handling";
-import { param, validationResult } from "express-validator";
+import { body, param, validationResult } from "express-validator";
 import { LikeV2Service } from "../services/likeV2.service";
 
 export const likeRouter: express.Router = express.Router();
@@ -22,6 +22,42 @@ likeRouter.get(
       } else {
         return res.status(404).send(errorHandling("wrongId"));
       }
+    } catch (err) {
+      res.status(401).json(err);
+    }
+  }
+);
+likeRouter.post(
+  "",
+  body("productId").exists().isNumeric(),
+  body("userId").exists().isNumeric(),
+  async (req: Request, res: Response) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    try {
+      const { productId, userId } = req.body;
+      const newLike = await likeV2Service.newLike(productId, userId);
+      res.status(200).json(newLike);
+    } catch (err) {
+      res.status(401).json(err);
+    }
+  }
+);
+likeRouter.delete(
+  "",
+  body("productId").exists().isNumeric(),
+  body("userId").exists().isNumeric(),
+  async (req: Request, res: Response) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    try {
+      const { productId, userId } = req.body;
+      const deleteLike = await likeV2Service.deleteLike(productId, userId);
+      res.status(200).json(deleteLike);
     } catch (err) {
       res.status(401).json(err);
     }

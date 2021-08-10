@@ -16,4 +16,19 @@ export class LikeRepository {
 
     return likesByUserId;
   }
+  public async newLike(productId: number, id: number): Promise<string> {
+    await this.db.query({
+      sql: "INSERT INTO productLike SET productId=?, id=?",
+      values: [productId, id],
+    });
+    return "Succesfully added";
+  }
+  public async deleteLike(productId: number, id: number): Promise<string> {
+    await this.db.query({
+      sql: "DELETE FROM productLike WHERE productId=? and id=?",
+      values: [productId, id],
+    });
+
+    return "Succesfully deleted";
+  }
 }
