@@ -35,6 +35,7 @@ export class UserRepository {
       sql: `SELECT  * FROM user WHERE  email = ? `,
       values: [email],
     });
+
     return userToLog[0];
   }
   public async save(user: IUser): Promise<IUser> {
