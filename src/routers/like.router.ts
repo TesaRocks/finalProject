@@ -49,16 +49,17 @@ likeRouter.post(
   }
 );
 likeRouter.delete(
-  "",
-  body("productId").exists().isNumeric(),
-  body("userId").exists().isNumeric(),
+  "/:userId/:productId",
+  param("productId").exists().isNumeric(),
+  param("userId").exists().isNumeric(),
   async (req: Request, res: Response) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
     try {
-      const { productId, userId } = req.body;
+      const productId: number = parseInt(req.params.productId, 10);
+      const userId: number = parseInt(req.params.userId, 10);
       const deleteLike = await likeV2Service.deleteLike(productId, userId);
       res.status(200).json(deleteLike);
     } catch (err) {
