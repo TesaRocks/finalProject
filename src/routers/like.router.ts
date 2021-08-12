@@ -27,6 +27,28 @@ likeRouter.get(
     }
   }
 );
+likeRouter.get(
+  "/select/:productId",
+  param("productId").exists().isNumeric(),
+  async (req: Request, res: Response) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    try {
+      const productId: number = await parseInt(req.params.productId, 10);
+      const likeByProductId = await likeV2Service.getLikeByProductId(productId);
+      if (likeByProductId != undefined) {
+        return res.status(200).json(likeByProductId);
+      } else {
+        return res.status(404).send(errorHandling("wrongId"));
+      }
+    } catch (err) {
+      res.status(401).json(err);
+    }
+  }
+);
+
 likeRouter.post(
   "",
   body("productId").exists().isNumeric(),

@@ -16,6 +16,13 @@ export class LikeRepository {
 
     return likesByUserId;
   }
+  public async getLikebyProductId(productId: number): Promise<IProduct> {
+    const likeByProductId = await this.db.query({
+      sql: "select  products.productId, products.name, products.description, products.price,products.imagePath from productLike inner join products on productLike.productId = products.productId inner join user on productLike.id = user.id where products.productId=?",
+      values: productId,
+    });
+    return likeByProductId;
+  }
   public async newLike(productId: number, id: number): Promise<string> {
     await this.db.query({
       sql: "INSERT INTO productLike SET productId=?, id=?",

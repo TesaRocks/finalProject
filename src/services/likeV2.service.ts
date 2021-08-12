@@ -8,6 +8,9 @@ export class LikeV2Service {
   public async getLikesByUserId(userId: number) {
     return await this.likeRepository.getLikesByUserId(userId);
   }
+  public async getLikeByProductId(productId: number) {
+    return await this.likeRepository.getLikebyProductId(productId);
+  }
   public async newLike(productId: number, userId: number) {
     return await this.likeRepository.newLike(productId, userId);
   }
